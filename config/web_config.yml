@@ -1,0 +1,47 @@
+website:
+  start_url: "https://next.rikunabi.com/job_search/oc-technology/"
+  item_selector: //*[@id="__next"]/div/div[2]/main/div/ul/li/div/a
+  next_button_selector: //*[@id="__next"]/div/div[2]/main/div/nav/a[7]
+  detail_selectors:
+    title: 
+      xpath: //*[@id="__next"]/div/div/div[2]/div[1]/section/div[1]/div/div[1]/div[2]/h1
+    job_description: 
+      xpath: //*[@id="job-description-text"]/td/p
+    required_person: 
+      xpath: //*[@id="desired-talent"]/td/p
+    enviroment:
+      xpath: 
+    location:
+      xpath: //*[@id="work-location"]/td/p
+    salary: 
+      xpath: //*[@id="salary"]/td/p
+    working_hours:
+      xpath:  //*[@id="working-hour"]/td/p
+    holidays: 
+      xpath: //*[@id="holiday-vacation"]/td/p
+    benefits: 
+      xpath: //*[@id="benefit"]/td/p
+    trial_period: 
+      xpath: //*[@id="trial-period"]/td/p
+    pr: 
+      sub_elements:
+        - xpath: //*[@id="jobRelatedPR"]/td/div/span
+        - xpath: //*[@id="jobRelatedPR"]/td/div/div/span
+        
+    features:
+      xpath: //*[@id="jobFeatureDisplay"]/td/ul/li/span
+      is_multi: true  
+    selection_flow:
+      xpath: 
+    company_name: 
+      xpath: //*[@id="company-information"]/table/tbody/tr[1]/td/div/span
+    ceo: 
+      xpath: //*[@id="company-information"]/table/tbody/tr[2]/td/p
+    address: 
+      xpath: //*[@id="company-information"]/table/tbody/tr[3]/td/p
+    phone: 
+      xpath: //*[@id="company-information"]/table/tbody/tr[4]/td/p
+    business:
+      xpath:  //*[@id="company-information"]/table/tbody/tr[5]/td/p
+
+

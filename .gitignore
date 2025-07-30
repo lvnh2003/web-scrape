@@ -1,0 +1,16 @@
+# Virtual environment
+venv/
+.env
+
+# Output folders
+output/*
+!output/.gitkeep
+
+# VSCode & other editor settings
+.vscode/
+.idea/
+
+# __pycache__ folder
+config/__pycache__
+scrapers/__pycache__
+utils/__pycache__
