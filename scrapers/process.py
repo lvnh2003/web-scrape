@@ -30,7 +30,7 @@ class WebScraper:
                 results.append(detail)
                 self.driver.back()
                 random_delay()
-                
+                break;
             break
                 
             if not self._go_to_next_page():
