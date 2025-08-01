@@ -1,0 +1,60 @@
+table_name: job_listings
+
+columns:
+  url:
+    type: TEXT
+    primary_key: true
+
+  title:
+    type: TEXT
+
+  job_description:
+    type: TEXT
+
+  required_person:
+    type: TEXT
+
+  enviroment:
+    type: TEXT
+
+  location:
+    type: TEXT
+
+  salary:
+    type: TEXT
+
+  working_hours:
+    type: TEXT
+
+  holidays:
+    type: TEXT
+
+  benefits:
+    type: TEXT
+
+  trial_period:
+    type: TEXT
+
+  pr:
+    type: TEXT
+
+  features:
+    type: TEXT
+
+  selection_flow:
+    type: TEXT
+
+  company_name:
+    type: TEXT
+
+  ceo:
+    type: TEXT
+
+  address:
+    type: TEXT
+
+  phone:
+    type: TEXT
+
+  business:
+    type: TEXT

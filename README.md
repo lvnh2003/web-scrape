@@ -20,6 +20,36 @@ pip install -r requirements.txt
 
 ### 1. 設定ファイルの作成
 
+#### .env ファイルの設定する内容
+```bash
+cp .env.example .env
+```
+.env ファイルには以下のような環境変数を記述します
+
+例:
+```
+  DB_HOST=localhost
+  DB_PORT=5432
+  DB_NAME=your_database_name
+  DB_USER=your_username
+  DB_PASSWORD=your_password
+```
+
+データベース設定ファイル `config/db_config.yml`
+
+このファイルでは、PostgreSQL の保存に関する詳細なマッピング設定を行います。
+.env ファイルが接続情報を定義するのに対し、db_config.yml は「どの項目をどのカラムに保存するか」を制御します。
+
+例:
+
+```yaml
+table: job_listings
+columns:
+  title: TEXT
+  description: TEXT
+  features: TEXT
+```
+
 `config/web_config.yml` にスクレイピング対象のサイトの設定を記述します。
 
 例:
@@ -92,12 +122,25 @@ python main.py
 ```
 .
 ├── config/
-│   └── web_config.yml        # スクレイピング設定ファイル
+│   ├── db_config.yml        # DB設定ファイル（保存先テーブルやカラムマッピングを定義）
+│   └── web_config.yml       # スクレイピング対象サイトのセレクターや構造設定
+│
+├── output/                  # スクレイピング結果の保存先（CSVやJSONなど）
+│
 ├── scrapers/
-│   └── web_scraper.py        # WebScraper クラス本体
+│   ├── driver.py            # Seleniumのドライバー初期化など
+│   ├── extractor.py         # セレクターに従ってデータを抽出
+│   └── process.py           # データ整形・加工・構造調整など
+│
 ├── utils/
-│   └── function.py           # 補助関数（例：random_delay）
-├── output/                   # 結果保存フォルダ
-├── main.py                   # エントリポイント
-└── requirements.txt          # 依存パッケージ
+│   ├── db.py                # PostgreSQLとの接続・保存処理
+│   └── function.py          # 汎用的な関数（delay, loggingなど）
+│
+├── main.py                  # メインの実行スクリプト（エントリーポイント）
+│
+├── .env                     # DB接続情報などの環境変数
+├── .env.example             # .envのサンプルファイル
+├── requirements.txt         # Pythonパッケージの依存関係
+├── README.md                # 本ファイル（ドキュメント）
+└── .gitignore               # Gitで無視するファイル
 ```
