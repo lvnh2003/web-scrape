@@ -14,3 +14,7 @@ output/*
 config/__pycache__
 scrapers/__pycache__
 utils/__pycache__
+utils/connection/__pycache__
+
+# config/serviceAccountKey.json
+config/serviceAccountKey.json

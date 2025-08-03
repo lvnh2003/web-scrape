@@ -1,2 +1,5 @@
 selenium
 PyYAML
+psycopg
+dotenv
+firebase-admin

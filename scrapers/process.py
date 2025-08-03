@@ -24,7 +24,6 @@ class WebScraper:
                 results.append(detail)
                 self.driver.back()
                 random_delay()
-
             if not self._go_to_next_page():
                 break
 
