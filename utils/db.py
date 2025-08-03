@@ -1,22 +1,8 @@
-# db.py
-import os
-import psycopg
-from dotenv import load_dotenv
 import yaml
+from utils.connection import db_conn, firestore_db
 
-load_dotenv()
-
-def get_db_connection():
-    return psycopg.connect(
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT"),
-        dbname=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-    )
-
-def table_exists(conn, table_name):
-    with conn.cursor() as cur:
+def table_exists(table_name):
+    with db_conn.cursor() as cur:
         cur.execute("""
             SELECT EXISTS (
                 SELECT FROM information_schema.tables
@@ -25,12 +11,12 @@ def table_exists(conn, table_name):
         """, (table_name,))
         return cur.fetchone()[0]
 
-def create_table_from_config(conn, config_path, table_name):
+def create_table_from_config(config_path, table_name):
     with open(config_path, "r") as f:
         config = yaml.safe_load(f)
 
     if config["table_name"] != table_name:
-        raise ValueError("⚠ Tên bảng trong cấu hình không khớp.")
+        raise ValueError("Table name in config does not match.")
 
     columns = config["columns"]
     column_defs = []
@@ -47,9 +33,9 @@ def create_table_from_config(conn, config_path, table_name):
     );
     """
 
-    with conn.cursor() as cur:
+    with db_conn.cursor() as cur:
         cur.execute(create_table_sql)
-        conn.commit()
+        db_conn.commit()
 
 def insert_data(table_name: str, data: list[dict], db_config_path="config/db_config.yml"):
     if not data:
@@ -57,9 +43,9 @@ def insert_data(table_name: str, data: list[dict], db_config_path="config/db_con
         return
 
     try:
-        with get_db_connection() as conn:
-            if not table_exists(conn, table_name):
-                create_table_from_config(conn, db_config_path, table_name)
+        with db_conn as conn:
+            if not table_exists(table_name):
+                create_table_from_config(db_config_path, table_name)
 
             columns = list(data[0].keys())
             values = [[item.get(col) for col in columns] for item in data]
@@ -73,10 +59,23 @@ def insert_data(table_name: str, data: list[dict], db_config_path="config/db_con
             ON CONFLICT DO NOTHING
             """
 
-            with conn.cursor() as cur:
+            with db_conn.cursor() as cur:
                 cur.executemany(insert_query, values)
-            conn.commit()
+            db_conn.commit()
 
             print(f"{table_name}テーブルにコンテンツを追加しました")
     except Exception as e:
         print("Failed to save data:", e)
+
+def insert_data_to_firestore(table_name: str, data: list[dict]):
+    if not data:
+        print("データがありません。")
+        return
+    
+    collection = firestore_db.collection(table_name)
+    
+    for item in data:
+        collection.add(item)
+    
+    print(f"{table_name}テーブルにコンテンツを追加しました")
+    
